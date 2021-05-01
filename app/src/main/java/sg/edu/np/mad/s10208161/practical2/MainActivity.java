@@ -1,5 +1,6 @@
 package sg.edu.np.mad.s10208161.practical2;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -11,15 +12,15 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
+    // my codes - not even sure if this is how you comment in Java
+    // create new user object and init params as specified.
+    User u1 = new User("MAD", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", 0, false);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // my codes - not even sure if this is how you comment in Java
-        // create new user object and init params as specified.
-        User u1 = new User("MAD", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", 0, false);
         // changing the title text and description text to specifications
         TextView titleText = findViewById(R.id.titleText);
         titleText.setText(u1.name);
@@ -72,11 +73,25 @@ public class MainActivity extends AppCompatActivity {
     public void followBtnText(User u, Button followBtn) {
         // check if the user is followed and change relevant button texts. set as method would be better?
         if (u.followed) {
-            followBtn.setText("Followed");
+            followBtn.setText("Unfollow");
         }
         else {
             followBtn.setText("Follow");
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean("follow", u1.followed);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        u1.followed = savedInstanceState.getBoolean("follow");
+        Button followBtn = findViewById(R.id.followBtn);
+        followBtnText(u1,followBtn);
     }
 
     @Override
